@@ -1,0 +1,24 @@
+name: vehiculo-mysql
+
+services: 
+  fastapi-app:  
+    build:  
+      context: .  
+      dockerfile: Dockerfile  
+    container_name: fastapi-app-coches 
+    restart: always  
+    ports:  
+      - "8000:8000"  
+    depends_on:  
+      - db-mysql
+  db-mysql:  
+    image: mysql 
+    container_name: vehiculodb-mysql   
+    environment:  
+      MYSQL_ROOT_PASSWORD: quevedo
+      MYSQL_DATABASE: vehiculodb
+      MYSQL_USER: quevedo
+      MYSQL_PASSWORD: 1234
+    ports:  
+      - "3306:3306"
+
