@@ -9,7 +9,7 @@ db_port: str = 3306
 db_name: str = "vehiculodb"
 
 DATABASE_URL = f"mysql+pymysql://{db_user}:{db_password}@{db_server}:{db_port}/{db_name}"
-engine =create_engine(os.getenv("db_url", DATABASE_URL))
+engine =create_engine(os.getenv("db_url", DATABASE_URL, echo=True))
 
 def get_session():
     with Session(engine) as session:
