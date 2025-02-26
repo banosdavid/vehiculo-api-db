@@ -17,47 +17,10 @@ SessionDep= Annotated [Session, Depends(get_session)]
 app = FastAPI(lifespan=lifespan)
 
 
-#vehiculo con menos kilometros
-
-@app.get("/vehiculos/menoskm", response_model=Vehiculo)
-async def vehiculo_menos_kilometros(session: SessionDep):
-    vehiculos = session.exec(select(Vehiculo)).all()
-    
-    if not vehiculos:
-        raise HTTPException(status_code=400, detail="No vehicles found")
-    
-    vehiculo_menos_km = None
-    for vehiculo in vehiculos:
-        if vehiculo_menos_km is None or vehiculo.km < vehiculo_menos_km.km:
-            vehiculo_menos_km = vehiculo
-    
-    return vehiculo_menos_km
 
 
 
 
-
-@app.get("/vehiculos/media")
-async def calcular_media_kilometros(session: SessionDep):
-    vehiculos = session.exec(select(Vehiculo)).all()
-    
-    
-    if not vehiculos:
-        raise HTTPException(status_code=400, detail="No vehicles found")
-    total_km=0
-    for vehiculo in vehiculos:
-        total_km = vehiculo.km 
-        media_km = total_km / len(vehiculos)
-        return {"mediaKilometros": media_km}
-
-
-
-
-@app.get("/vehiculos/media-sql")
-def calcular_media_kilometros_sql(session: SessionDep):
-    media = session.exec(select(func.avg(Vehiculo.km))).first()
-    return {"mediaKilometros": media}
-            
 
 
 @app.delete("/vehiculos/{vehiculo_matricula}")
